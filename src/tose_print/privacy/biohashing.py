@@ -21,8 +21,8 @@ class BioHasher:
     def generate_projection_matrix(self, user_key: Union[int, str], input_dim: int) -> np.ndarray:
         """
         Generates projection matrix R in R^{m x d} from user key/token.
-        If m <= input_dim: uses Gram-Schmidt (QR) to obtain strictly orthonormal hyperplanes.
-        If m > input_dim: uses normalized random hyperplanes (Johnson-Lindenstrauss preserving).
+        Constructs m independently sampled, normalized random Gaussian hyperplanes
+        satisfying the random hyperplane angular distance preservation property.
         """
         if isinstance(user_key, str):
             import hashlib
@@ -33,16 +33,10 @@ class BioHasher:
         rng = np.random.RandomState(seed)
         m = self.config.projection_dim
 
-        if m <= input_dim:
-            # QR on transpose to get m orthonormal rows
-            random_matrix = rng.randn(input_dim, m)
-            q, _ = np.linalg.qr(random_matrix)
-            return q.T.astype(np.float32)
-        else:
-            # Normalized random hyperplanes
-            R = rng.randn(m, input_dim).astype(np.float32)
-            row_norms = np.linalg.norm(R, axis=1, keepdims=True) + 1e-8
-            return (R / row_norms).astype(np.float32)
+        # m independent isotropic Gaussian vectors normalized to the unit sphere S^{d-1}
+        R = rng.randn(m, input_dim).astype(np.float32)
+        row_norms = np.linalg.norm(R, axis=1, keepdims=True) + 1e-8
+        return (R / row_norms).astype(np.float32)
 
     def generate_template(self, tose_vector: Union[TOSEVector, np.ndarray], user_key: Union[int, str]) -> np.ndarray:
         """

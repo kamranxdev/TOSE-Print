@@ -35,7 +35,7 @@ class TopologyConfig:
 
 @dataclass
 class EmbeddingConfig:
-    dimension: int = 325
+    dimension: int = 261
     l2_normalize: bool = True
 
 
@@ -104,7 +104,7 @@ class SystemConfig:
         if "embedding" in data:
             e = data["embedding"]
             cfg.embedding = EmbeddingConfig(
-                dimension=int(e.get("dimension", 325)),
+                dimension=int(e.get("dimension", 261)),
                 l2_normalize=bool(e.get("l2_normalize", True)),
             )
         if "privacy" in data:

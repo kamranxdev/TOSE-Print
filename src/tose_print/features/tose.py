@@ -56,8 +56,9 @@ class TOSEExtractor:
 
         den = Jxx + Jyy + 1e-8
         coherence = np.clip(np.sqrt((Jxx - Jyy) ** 2 + 4.0 * (Jxy ** 2)) / den, 0.0, 1.0)
-        cos2theta = ((Jxx - Jyy) / den) * coherence
-        sin2theta = ((2.0 * Jxy) / den) * coherence
+        # Continuous doubled-angle orientation vector field (norm equals coherence)
+        cos2theta = (Jxx - Jyy) / den
+        sin2theta = (2.0 * Jxy) / den
 
         # 1. Spatial orientation tensor grid (8x8x2 = 128 dims)
         g = self.spatial_grid
