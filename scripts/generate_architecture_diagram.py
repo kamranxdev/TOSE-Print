@@ -112,11 +112,13 @@ def build_architecture_diagram(output_dir: str):
             "x": 67.44, "w": 14.2,
             "bullets": (
                 "• User Token Seed Key K\n"
-                "  PRNG orthonormal projection\n"
-                "• Random Matrix R (512 × 261)\n"
-                "• Hyperplane Binarization\n"
-                "  b_i = sgn(⟨R_i, v⟩) ∈ {0, 1}\n"
-                "• Preserves Angle: E[dH/m]=θ/π\n"
+                "  CSPRNG random hyperplanes\n"
+                "• Spherical Projection Matrix R\n"
+                "  r_i ~ N(0, I_d) / ||r_i|| (512×261)\n"
+                "• Half-Space Sign Quantization\n"
+                "  b_i = sgn(⟨r_i, v⟩) ∈ {0, 1}\n"
+                "• SimHash Angular Identity\n"
+                "  E[d_H/m] = θ/π (Goemans-W.)\n"
                 "• ISO/IEC 24745 Unlinkable"
             ),
             "thumb_title": "BioHash {0, 1}^512"
@@ -129,9 +131,10 @@ def build_architecture_diagram(output_dir: str):
             "bullets": (
                 "• FAISS HNSW Proximity Graph\n"
                 "  Multi-layer skip list routing\n"
-                "• Sub-Linear Search O(log N · d)\n"
+                "• Empirical Sub-Linear Search\n"
+                "  T_search ≈ O(d · log N)\n"
                 "• Hypersphere Inner Product\n"
-                "• > 2,300 QPS @ 100% Recall\n"
+                "  > 2,300 QPS @ 100% Recall\n"
                 "• 5.0x Speedup @ 50K Gallery"
             ),
             "thumb_title": "HNSW Proximity Graph"
@@ -363,9 +366,9 @@ def build_architecture_diagram(output_dir: str):
     ax2.add_patch(a3_box)
     ax2.text(5.0, 49.0, "3. Continuous Doubled-Angle Vector Field on SE(2):", fontsize=10.5, fontweight='bold', color='#0f766e', zorder=4)
     eq_a3_text = (
-        r"$u_c(x, y) = \kappa \cos(2\theta) = \frac{J_{xx} - J_{yy}}{J_{xx} + J_{yy} + \epsilon} \cdot \kappa, \quad u_s(x, y) = \kappa \sin(2\theta) = \frac{2J_{xy}}{J_{xx} + J_{yy} + \epsilon} \cdot \kappa$" + "\n" +
-        r"$\bullet\ \mathbf{Eliminates\ Phase\ Discontinuity:}\ 1^\circ\ \mathrm{and}\ 179^\circ\ \mathrm{are\ topologically\ continuous}$" + "\n" +
-        r"$\bullet\ \mathbf{Anisotropic\ Coherence:}\ \kappa = \frac{\sqrt{(J_{xx} - J_{yy})^2 + 4J_{xy}^2}}{J_{xx} + J_{yy} + \epsilon} \in [0, 1]$"
+        r"$u_c(x, y) = \kappa \cos(2\theta) = \frac{J_{xx} - J_{yy}}{J_{xx} + J_{yy} + \epsilon}, \quad u_s(x, y) = \kappa \sin(2\theta) = \frac{2J_{xy}}{J_{xx} + J_{yy} + \epsilon}$" + "\n" +
+        r"$\bullet\ \mathbf{Continuous\ Norm:}\ \|(u_c, u_s)\|_2 = \kappa(x, y) \in [0, 1]\ \mathrm{(Vanishes\ in\ untextured\ background)}$" + "\n" +
+        r"$\bullet\ \mathbf{Harmonic\ SO(2)\ Equivariance:}\ \mathrm{Rotation\ by\ }\phi \rightarrow 2\phi\ \mathrm{harmonic\ vector\ rotation}$"
     )
     ax2.text(5.5, 40.5, eq_a3_text, fontsize=9.6, color='#134e4a', linespacing=1.6, zorder=4)
 
