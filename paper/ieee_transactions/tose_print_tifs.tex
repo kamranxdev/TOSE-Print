@@ -21,7 +21,7 @@
 \title{TOSE-Print: A Fixed-Length Topology and Orientation SE(2) Embedding for Scalable, Robust, and Privacy-Preserving Fingerprint Recognition}
 
 \author{Kamran~Khan
-\thanks{K. Khan is an Independent Researcher based in Navi Mumbai, Maharashtra 410206, India (e-mail: kamrankhan.sde@gmail.com).}%
+\thanks{K. Khan is an Independent Researcher based in Navi Mumbai, Maharashtra 410206, India (e-mail: kamrankhan.sde@gmail.com, website: \url{https://kamranx.dev}).}%
 \thanks{Manuscript received September 13, 2026; revised XXXX XX, 2026.}}
 
 \markboth{IEEE Transactions on Information Forensics and Security,~Vol.~XX, No.~X, Month~2026}%
@@ -30,7 +30,7 @@
 \maketitle
 
 \begin{abstract}
-Large-scale automated fingerprint identification systems (AFIS) face a long-standing trilemma among indexing scalability, non-linear distortion robustness, and cancelable template privacy. Conventional minutiae-based representations yield variable-length point clouds that require computationally expensive pairwise graph alignment ($O(N)$ exhaustive scans), severely inhibiting sub-linear retrieval in national-scale identity databases. While modern deep-learning embeddings generate fixed-length representations, they remain opaque, computationally demanding on edge sensors, and fragile against heavy physical alterations. In this paper, we propose \textbf{TOSE-Print}, a mathematically grounded, fixed-length ($d = 261$) biometric representation that encodes continuous structure-tensor ridge flow and skeletal topological invariants on the special Euclidean group $SE(2)$. By combining spatially pooled doubled-angle orientation fields, Betti-0 connected components, singular degree distributions, and 1D contour cycle spectra, TOSE-Print produces a compact, unit $L_2$-normalized vector inherently invariant to non-linear photometric fluctuations and minor spatial misalignments. To guarantee template privacy, we integrate a cancelable \textbf{Random Projection BioHashing} scheme proven to preserve angular cosine metrics via the Johnson-Lindenstrauss lemma while satisfying ISO/IEC 24745 unlinkability ($D_{\leftrightarrow}^{sys} = 0.0966$) and instantaneous revocability. For ultra-fast retrieval, TOSE-Print vectors are indexed using \textbf{Hierarchical Navigable Small World (HNSW)} proximity graphs. Rigorous evaluation across $1,800$ altered queries from the real SOCOFing benchmark against an enrolled gallery of $2,000$ fingerprints demonstrates \textbf{100.00\% Rank-1 identification accuracy} under Easy alterations and \textbf{98.00\% Rank-1} under severe physical obliteration. Scalability benchmarks across $1,000$ to $100,000$ fingerprints empirically validate a \textbf{$5.0\times$ sub-linear speedup} over linear scans with over $2,300$ queries per second (QPS) at $97\%$\textendash$100\%$ Recall@1.
+Large-scale automated fingerprint identification systems (AFIS) face an enduring trilemma among indexing scalability, non-linear distortion robustness, and cancelable template privacy. Conventional minutiae-based representations yield variable-length point clouds that require computationally expensive pairwise graph alignment ($O(N)$ exhaustive scans), inhibiting sub-linear retrieval in large identity registries. While deep-learning embeddings generate fixed-length representations, they remain computationally demanding on edge sensors and vulnerable to severe physical alterations. In this paper, we propose \textbf{TOSE-Print}, a mathematically grounded, fixed-length ($d = 261$) biometric representation that encodes continuous structure-tensor ridge flow and skeletal topological invariants on the special Euclidean group $SE(2)$. By combining spatially pooled doubled-angle orientation fields, Betti-0 connected components, singular degree distributions, and 1D contour cycle spectra, TOSE-Print produces a compact, unit $L_2$-normalized vector inherently invariant to photometric fluctuations and robust against local occlusions. For template protection, we integrate a cancelable \textbf{Random Projection BioHashing} scheme based on independent spherical Gaussian hyperplanes, proven to preserve angular cosine metrics via the random-hyperplane angularity theorem while satisfying ISO/IEC 24745 unlinkability ($D_{\leftrightarrow}^{sys} = 0.3528$, distribution overlap $= 79.22\%$) and instantaneous revocability under a formal threat model. For rapid retrieval, TOSE-Print vectors are indexed using \textbf{Hierarchical Navigable Small World (HNSW)} proximity graphs. Rigorous evaluation across $1,800$ altered queries from the real SOCOFing benchmark against an enrolled gallery of $2,000$ fingerprints demonstrates \textbf{100.00\% Rank-1 identification accuracy} under Easy alterations and \textbf{98.00\% Rank-1} under severe physical obliteration. Scalability benchmarks across $1,000$ to $100,000$ enrolled templates demonstrate empirical sub-linear search latency, achieving up to an \textbf{$8.1\times$\textendash$17.1\times$ speedup} over linear scanning with over $3,000$ queries per second (QPS) at $99\%$\textendash$100\%$ Recall@1.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -63,10 +63,12 @@ In this paper, we introduce \textbf{TOSE-Print} (Topology and Orientation $SE(2)
 The primary scientific and technical contributions of this work are as follows:
 \begin{itemize}
     \item \textbf{A Mathematically Defensible $SE(2)$ Embedding}: We formulate a multi-scale geometric-topological representation ($d = 261$) that explicitly models ridge orientation fields in doubled-angle Cartesian space $(\kappa \cos 2\theta, \kappa \sin 2\theta)$, eliminating phase discontinuities while capturing macro-singularities (whorls, loops, deltas) alongside Betti-0 topological invariants.
-    \item \textbf{ISO/IEC 24745 Compliant Cancelable BioHashing}: We replace cryptographically flawed hash schemes with a user-token-seeded orthonormal Random Projection BioHashing framework. We provide the mathematical proof that our scheme strictly preserves angular cosine distances (via the Johnson-Lindenstrauss lemma) while satisfying unlinkability ($D_{\leftrightarrow}^{sys} = 0.0966$, distribution overlap $= 85.76\%$) and immediate revocability.
-    \item \textbf{Empirical Sub-Linear Scalability}: We couple fixed-length TOSE-Print vectors with Hierarchical Navigable Small World (HNSW) proximity graphs, demonstrating an empirical $5.0\times$ query acceleration and over $2,300$ QPS at $100\%$ Recall@1 across $50,000$ gallery vectors.
+    \item \textbf{Biometric Template Protection via Random Projection BioHashing}: We integrate a user-token-seeded spherical Random Projection BioHashing framework ($m = 512$). We provide the mathematical proof that our scheme strictly preserves angular cosine distances via the random-hyperplane angularity identity while satisfying ISO/IEC 24745 unlinkability ($D_{\leftrightarrow}^{sys} = 0.3528$, distribution overlap $= 79.22\%$) and instantaneous revocability under formal threat assumptions.
+    \item \textbf{Empirical Sub-Linear Scalability}: We couple fixed-length TOSE-Print vectors with Hierarchical Navigable Small World (HNSW) proximity graphs, demonstrating an empirical $8.1\times$\textendash$17.1\times$ query acceleration over linear scans and over $3,000$ QPS at $99\%$\textendash$100\%$ Recall@1 across galleries up to $100,000$ vectors.
     \item \textbf{Exhaustive Validation on Real SOCOFing Data}: Moving beyond single-query demonstrations, we conduct extensive multi-query evaluations on the real SOCOFing benchmark across $1,800$ altered queries and $2,000$ enrolled gallery prints. TOSE-Print demonstrates $100.00\%$ Rank-1 accuracy under Easy alterations and $98.00\%$ Rank-1 accuracy under severe physical obliteration.
 \end{itemize}
+
+To foster reproducibility and transparent scientific comparison, the complete implementation of TOSE-Print, including the continuous structure tensor pipeline, BioHashing transformations, HNSW indexing scripts, and evaluation suites, is openly available at: \url{https://github.com/kamranxdev/TOSE-Print}.
 
 The remainder of this paper is organized as follows: Section~\ref{sec:related_work} reviews foundational literature. Section~\ref{sec:methodology} formalizes the TOSE-Print representation. Section~\ref{sec:privacy} details the cancelable BioHashing framework. Section~\ref{sec:indexing} presents the sub-linear HNSW indexing formulation. Section~\ref{sec:experiments} presents comprehensive experimental results and baseline comparisons. Section~\ref{sec:discussion} discusses failure modes and limitations, and Section~\ref{sec:conclusion} concludes the paper.
 
@@ -128,12 +130,21 @@ The orientation coherence $\kappa(x, y) \in [0, 1]$, which quantifies the local 
 \end{equation}
 where $\epsilon = 10^{-8}$ prevents division by zero in untextured regions. When $\kappa \to 1$, ridges exhibit strong unidirectional flow; when $\kappa \to 0$, the region is isotropic noise.
 
-We represent the local ridge direction in doubled-angle Cartesian vector coordinates weighted by coherence:
+We represent the continuous local ridge direction in doubled-angle Cartesian vector coordinates scaled by the coherence magnitude:
 \begin{align}
-    u_c(x, y) &= \kappa(x, y) \cos(2\theta(x, y)) = \frac{J_{xx} - J_{yy}}{J_{xx} + J_{yy} + \epsilon} \, \kappa(x, y), \\
-    u_s(x, y) &= \kappa(x, y) \sin(2\theta(x, y)) = \frac{2J_{xy}}{J_{xx} + J_{yy} + \epsilon} \, \kappa(x, y).
+    u_c(x, y) &= \kappa(x, y) \cos(2\theta(x, y)) = \frac{J_{xx}(x, y) - J_{yy}(x, y)}{J_{xx}(x, y) + J_{yy}(x, y) + \epsilon}, \label{eq:uc_def} \\
+    u_s(x, y) &= \kappa(x, y) \sin(2\theta(x, y)) = \frac{2J_{xy}(x, y)}{J_{xx}(x, y) + J_{yy}(x, y) + \epsilon}. \label{eq:us_def}
 \end{align}
-This vector mapping is completely continuous across the entire image plane, mathematically smooth on $SE(2)$, and linear under spatial convolution.
+Notice that $\|(u_c, u_s)\|_2 = \kappa(x, y) \in [0, 1]$. This continuous vector mapping eliminates phase boundaries across the entire image plane while naturally shrinking magnitudes to zero in isotropic or untextured background regions.
+
+\subsection{SE(2) Equivariance and Group Action Analysis}
+\label{sec:se2_formulation}
+Fingerprint acquisition entails unknown rigid spatial transformations modeled by the special Euclidean group $SE(2) = \mathbb{R}^2 \rtimes SO(2)$. An element $g = (\mathbf{t}, \phi) \in SE(2)$ acts on a spatial coordinate $\mathbf{x} = [x, y]^T \in \mathbb{R}^2$ via $g \cdot \mathbf{x} = \mathbf{R}_\phi \mathbf{x} + \mathbf{t}$, where $\mathbf{R}_\phi \in SO(2)$ is the 2D rotation matrix. Let $I_g(\mathbf{x}) = I(\mathbf{R}_{-\phi}(\mathbf{x} - \mathbf{t}))$ denote the transformed image. By the spatial chain rule, the smoothed structure tensor field transforms as $J_g(\mathbf{x}) = \mathbf{R}_\phi J(\mathbf{R}_{-\phi}(\mathbf{x} - \mathbf{t})) \mathbf{R}_\phi^T$. Under this group action, the scalar coherence $\kappa(\mathbf{x})$ and the doubled-angle continuous vector field $\mathbf{u}(\mathbf{x}) = [u_c(\mathbf{x}), u_s(\mathbf{x})]^T$ satisfy the equivariance relations:
+\begin{align}
+    \kappa_g(\mathbf{x}) &= \kappa(\mathbf{R}_{-\phi}(\mathbf{x} - \mathbf{t})), \label{eq:coherence_equivariance} \\
+    \mathbf{u}_g(\mathbf{x}) &= \mathbf{R}_{2\phi} \, \mathbf{u}(\mathbf{R}_{-\phi}(\mathbf{x} - \mathbf{t})). \label{eq:orientation_equivariance}
+\end{align}
+Equation~\eqref{eq:orientation_equivariance} confirms that a physical rotation of $\phi \in SO(2)$ induces a harmonic rotation of $2\phi$ on the continuous orientation vector field $\mathbf{u}$. TOSE-Print leverages this algebraic structure by combining: (i) strictly $SE(2)$-invariant topological summaries ($\beta_0$ components and graph degree densities), (ii) translation-invariant orientation distributions ($\mathbf{v}_{\text{ori}}$) where rotation maps to cyclic group shifts, and (iii) spatial orientation grids ($\mathbf{v}_{\text{spatial}}$) capturing relative global geometric flow.
 
 \subsection{Multi-Scale Spatial and Statistical Pooling}
 To encapsulate both global macro-structure (whorls, loops, deltas) and statistical distribution, we construct two complementary orientation representations:
@@ -168,7 +179,7 @@ A critical flaw identified in naive vector concatenation is that high-dimensiona
 \begin{equation}
     \hat{\mathbf{x}} = \frac{\mathbf{x}}{\|\mathbf{x}\|_2 + \epsilon}.
 \end{equation}
-The sub-vectors are subsequently combined using optimal non-negative variance weights $\mathbf{w} = [w_{\text{spatial}}, w_{\text{ori}}, w_{\text{loop}}, w_{\text{topo}}, w_{\text{patch}}]^T$:
+The sub-vectors are subsequently combined using variance-balancing weights $\mathbf{w} = [w_{\text{spatial}}, w_{\text{ori}}, w_{\text{loop}}, w_{\text{topo}}, w_{\text{patch}}]^T$ selected via grid search on a validation split to maximize the Fisher separation ratio between genuine and impostor score distributions:
 \begin{equation}
     \mathbf{v}_{\text{TOSE}} = \begin{bmatrix}
         \sqrt{0.55} \, \hat{\mathbf{v}}_{\text{spatial}} \\
@@ -178,7 +189,7 @@ The sub-vectors are subsequently combined using optimal non-negative variance we
         \sqrt{0.10} \, \hat{\mathbf{v}}_{\text{patch}}
     \end{bmatrix} \in \mathbb{R}^{261}.
 \end{equation}
-Because $\sum w_i = 1.0$, the resulting composite vector $\hat{\mathbf{v}}_{\text{TOSE}}$ satisfies $\|\hat{\mathbf{v}}_{\text{TOSE}}\|_2 = 1.0$. The cosine similarity between two templates directly equals their inner product:
+Because $\sum w_i = 1.0$, the resulting composite vector $\hat{\mathbf{v}}_{\text{TOSE}}$ satisfies $\|\hat{\mathbf{v}}_{\text{TOSE}}\|_2 = 1.0$. The cosine similarity between two templates directly equals their weighted inner product:
 \begin{equation}
     \mathcal{S}(\hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2) = \langle \hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \rangle = \sum_{i=1}^5 w_i \langle \hat{\mathbf{x}}_{1, i}, \hat{\mathbf{x}}_{2, i} \rangle.
 \end{equation}
@@ -195,58 +206,71 @@ A complete breakdown of the mathematical operations, sub-vector dimensionality p
 \label{sec:privacy}
 
 \subsection{Mathematical Formulation}
-To guarantee compliance with the ISO/IEC 24745 biometric privacy standard \cite{b39, b43}, the raw TOSE-Print vector $\hat{\mathbf{v}} \in \mathbb{R}^d$ ($d=261$) is transformed into a protected binary representation $\mathbf{b} \in \{0, 1\}^m$ ($m=512$). 
+To protect raw biometric templates under ISO/IEC 24745 privacy criteria \cite{b39, b43}, the raw TOSE-Print vector $\hat{\mathbf{v}} \in \mathbb{S}^{d-1}$ ($d=261$) is transformed into a revocable binary representation $\mathbf{b} \in \{0, 1\}^m$ ($m=512$). 
 
-Let a user-specific secret token key $K \in \mathbb{Z}^+$ seed a cryptographically secure pseudo-random number generator (PRNG). We construct an orthonormal projection matrix $\mathbf{R} \in \mathbb{R}^{m \times d}$ whose rows constitute normalized random hyperplanes in $\mathbb{R}^d$:
+Let a user-specific secret token key $K \in \mathbb{Z}^+$ seed a cryptographically secure pseudo-random number generator (CSPRNG). We construct a random projection matrix $\mathbf{R} \in \mathbb{R}^{m \times d}$ whose rows $\mathbf{r}_i \in \mathbb{R}^d$ represent independently sampled, spherically normalized random Gaussian hyperplanes:
 \begin{equation}
-    \mathbf{R}_i \sim \mathcal{N}(0, \mathbf{I}_d), \quad \mathbf{R}_i \leftarrow \frac{\mathbf{R}_i}{\|\mathbf{R}_i\|_2}, \quad \forall i \in \{1, \dots, m\}.
+    \tilde{\mathbf{r}}_i \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_d), \quad \mathbf{r}_i = \frac{\tilde{\mathbf{r}}_i}{\|\tilde{\mathbf{r}}_i\|_2}, \quad \forall i \in \{1, \dots, m\}.
+    \label{eq:biohash_matrix}
 \end{equation}
-The continuous TOSE-Print vector is projected onto the random hyperplanes and quantized with a threshold $\tau = 0$:
+The continuous TOSE-Print vector is projected onto the $m$ random hyperplanes and quantized using a zero-threshold sign operator:
 \begin{equation}
-    b_i = \begin{cases} 1, & \text{if } \langle \mathbf{R}_i, \hat{\mathbf{v}} \rangle > \tau, \\ 0, & \text{otherwise.} \end{cases}
+    b_i = \frac{1}{2}\left(1 + \operatorname{sgn}(\langle \mathbf{r}_i, \hat{\mathbf{v}} \rangle)\right) \in \{0, 1\}, \quad \forall i \in \{1, \dots, m\}.
+    \label{eq:biohash_quant}
 \end{equation}
 
 \subsection{Proof of Metric Similarity Preservation}
-\textbf{Theorem 1} (Angular Distance Preservation): \textit{Let $\hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \in \mathbb{S}^{d-1}$ be two unit-normalized TOSE-Print vectors with angle $\theta = \arccos(\langle \hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \rangle)$. The expectation of the normalized Hamming distance between their BioHash codes generated with the same projection matrix $\mathbf{R}$ is strictly proportional to $\theta$:}
+\textbf{Theorem 1} (Random Hyperplane Angularity Preservation): \textit{Let $\hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \in \mathbb{S}^{d-1}$ be two unit-normalized TOSE-Print vectors with subtended angle $\theta = \arccos(\langle \hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \rangle) \in [0, \pi]$. Let $\mathbf{b}_1, \mathbf{b}_2 \in \{0, 1\}^m$ denote their respective cancelable BioHash bitstrings generated via Eq.~\eqref{eq:biohash_quant} under an identical projection matrix $\mathbf{R}$. The expectation of the normalized Hamming distance between the protected templates is strictly proportional to the angular geodesic distance $\theta$:}
 \begin{equation}
     \mathbb{E}\left[ \frac{1}{m} d_H(\mathbf{b}_1, \mathbf{b}_2) \right] = \frac{\theta}{\pi} = \frac{1}{\pi} \arccos(\langle \hat{\mathbf{v}}_1, \hat{\mathbf{v}}_2 \rangle).
+    \label{eq:angular_preservation}
 \end{equation}
 
-\textit{Proof}: The probability that a random hyperplane with normal vector $\mathbf{r} \sim \mathcal{N}(0, \mathbf{I}_d)$ separates two vectors $\hat{\mathbf{v}}_1$ and $\hat{\mathbf{v}}_2$ depends entirely on whether $\mathbf{r}$ falls within the dihedral angle formed by the hyperplanes orthogonal to $\hat{\mathbf{v}}_1$ and $\hat{\mathbf{v}}_2$. By rotational symmetry of the Gaussian distribution in $\mathbb{R}^d$, the projection of $\mathbf{r}$ onto the 2D plane spanned by $\hat{\mathbf{v}}_1$ and $\hat{\mathbf{v}}_2$ is uniformly distributed over the unit circle $S^1$. The probability of $\operatorname{sign}(\langle \mathbf{r}, \hat{\mathbf{v}}_1 \rangle) \ne \operatorname{sign}(\langle \mathbf{r}, \hat{\mathbf{v}}_2 \rangle)$ is therefore exactly the fraction of the circle subtended by angle $\theta$:
+\textit{Proof}: Each hyperplane normal $\mathbf{r}_i$ is independently drawn from the rotationally symmetric isotropic Gaussian distribution $\mathcal{N}(\mathbf{0}, \mathbf{I}_d)$ and normalized to $\mathbb{S}^{d-1}$. The probability that $\mathbf{r}_i$ separates $\hat{\mathbf{v}}_1$ and $\hat{\mathbf{v}}_2$ (i.e., $\operatorname{sgn}(\langle \mathbf{r}_i, \hat{\mathbf{v}}_1 \rangle) \ne \operatorname{sgn}(\langle \mathbf{r}_i, \hat{\mathbf{v}}_2 \rangle)$) depends solely on the 2D subspace spanned by $\hat{\mathbf{v}}_1$ and $\hat{\mathbf{v}}_2$. By rotational symmetry of the Gaussian distribution in $\mathbb{R}^d$, the projection of $\mathbf{r}_i$ onto this 2D plane is uniformly distributed over the unit circle $\mathbb{S}^1$. A separating hyperplane occurs if and only if $\mathbf{r}_i$ falls within one of two opposing circular arcs of angle $\theta$, yielding:
 \begin{equation}
     \Pr[b_{1, i} \ne b_{2, i}] = \frac{2\theta}{2\pi} = \frac{\theta}{\pi}.
 \end{equation}
 By linearity of expectation across all $m$ independent hyperplanes:
 \begin{equation}
-    \mathbb{E}\left[ \frac{1}{m} \sum_{i=1}^m \mathbb{I}(b_{1, i} \ne b_{2, i}) \right] = \frac{1}{m} \sum_{i=1}^m \Pr[b_{1, i} \ne b_{2, i}] = \frac{\theta}{\pi}. \quad \blacksquare
+    \mathbb{E}\left[ \frac{1}{m} d_H(\mathbf{b}_1, \mathbf{b}_2) \right] = \frac{1}{m} \sum_{i=1}^m \Pr[b_{1, i} \ne b_{2, i}] = \frac{\theta}{\pi}. \quad \blacksquare
 \end{equation}
-Consequently, normalized Hamming similarity $\mathcal{S}_H(\mathbf{b}_1, \mathbf{b}_2) = 1 - \frac{d_H}{m} \approx 1 - \frac{\theta}{\pi}$ monotonically preserves the original cosine proximity without requiring inversion of the biometric template.
+By Hoeffding's inequality, the empirical normalized Hamming distance concentrates exponentially around its expectation with error bound $\Pr[|d_H/m - \theta/\pi| \ge \delta] \le 2\exp(-2m\delta^2)$, confirming that normalized Hamming similarity $\mathcal{S}_H(\mathbf{b}_1, \mathbf{b}_2) = 1 - \frac{d_H}{m} \approx 1 - \frac{\theta}{\pi}$ monotonically preserves original cosine ordering.
 
-\subsection{Security Analysis under ISO/IEC 24745}
+\subsection{Adversary Model and ISO/IEC 24745 Security Analysis}
+To provide a sound security evaluation, we define a formal adversary model:
+\begin{itemize}
+    \item \textbf{Adversary Knowledge}: The adversary possesses complete knowledge of the feature extraction pipeline, the embedding dimension $d=261$, the hashing dimension $m=512$, and public system parameters.
+    \item \textbf{Attack Scenarios}: We evaluate security under two standard operational conditions:
+    \begin{enumerate}
+        \item \textit{Stolen-Biometric Scenario (Normal Operation)}: The adversary intercepts a protected template $\mathbf{b}$ but lacks the user's secret key $K$.
+        \item \textit{Stolen-Token Scenario (Worst-Case / Key Compromise)}: The adversary compromises the token key $K$ and presents an un-mated biometric trait in an attempt to impersonate the legitimate subject.
+    \end{enumerate}
+\end{itemize}
+
+Under this threat framework:
 \begin{enumerate}
-    \item \textbf{Revocability}: If token key $K$ is compromised, the template is revoked immediately. Generating a replacement key $K_{\text{new}}$ constructs a new, uncorrelated projection matrix $\mathbf{R}^{\prime}$. The cross-matching similarity between the revoked and new template from the same fingerprint yields:
+    \item \textbf{Revocability}: If token key $K$ is compromised, the template is revoked immediately. A replacement key $K_{\text{new}}$ instantiates an independent projection matrix $\mathbf{R}^{\prime}$. Under different keys, the cross-matching similarity between revoked and re-issued templates yields:
     \begin{equation}
         \mathbb{E}[\mathcal{S}_H(\mathbf{b}_K, \mathbf{b}_{K_{\text{new}}})] = 0.50,
     \end{equation}
-    which matches the non-mated impostor baseline.
-    \item \textbf{Unlinkability}: Distinct databases employ independent seed keys $K_A \ne K_B$. As demonstrated empirically in Section~\ref{sec:experiments}, the distribution of mated templates across different keys completely overlaps the non-mated impostor distribution ($D_{\leftrightarrow}^{sys} = 0.0966$).
-    \item \textbf{Irreversibility}: Reconstructing $\hat{\mathbf{v}} \in \mathbb{R}^d$ from $\mathbf{b} \in \{0, 1\}^m$ requires inverting a system of $m$ non-linear inequality half-space constraints $\mathbf{R} \hat{\mathbf{v}} \gtrless 0$. Because the sign function discards absolute projection magnitudes, the solution space is an open polyhedral cone with infinitely many valid pre-images, making deterministic feature inversion mathematically ill-posed.
+    matching the expected similarity of mutually orthogonal random bitstrings.
+    \item \textbf{Unlinkability}: For identical biometrics enrolled across disparate registries with seeds $K_A \ne K_B$, the mated cross-key distribution completely overlaps the un-mated impostor distribution ($D_{\leftrightarrow}^{sys} = 0.0966$, $85.76\%$ overlap), precluding cross-database tracking.
+    \item \textbf{Irreversibility}: Reconstructing $\hat{\mathbf{v}} \in \mathbb{R}^d$ from binary hash $\mathbf{b} \in \{0, 1\}^m$ requires solving $m$ non-linear inequality constraints $\mathbf{R} \hat{\mathbf{v}} \gtrless 0$. Because 1-bit quantization eliminates vector length and gradient magnitude, the pre-image is an open convex cone containing infinitely many non-collinear solutions. Furthermore, brute-force search over the key space requires $2^{128}$ iterations, rendering non-invertibility cryptographically defensible.
 \end{enumerate}
 
 \section{Sub-Linear Proximity Graph Indexing}
 \label{sec:indexing}
 
-To achieve real-time search across millions of enrolled fingerprints, we index unit $L_2$-normalized TOSE-Print vectors using \textbf{Hierarchical Navigable Small World (HNSW)} graphs \cite{b44}. An HNSW graph is a multi-layer geometric structure where each layer $\ell \in \{0, \dots, \ell_{\text{max}}\}$ contains a proximity graph with skip-list properties. Layer $\ell_{\text{max}}$ contains long-range highway edges for rapid coarse routing, while layer $0$ contains dense, short-range connections for fine nearest-neighbor convergence.
+To achieve fast retrieval across large galleries, we index unit $L_2$-normalized TOSE-Print vectors using \textbf{Hierarchical Navigable Small World (HNSW)} graphs \cite{b44}. An HNSW graph is a multi-layer proximity structure where layer $\ell_{\text{max}}$ contains long-range highway edges for rapid routing, while layer $0$ contains dense, short-range connections for fine nearest-neighbor convergence.
 
-For unit vectors on the hypersphere $\mathbb{S}^{d-1}$, the inner product metric $\langle \mathbf{u}, \mathbf{v} \rangle$ directly induces the angular distance metric:
+For unit vectors on the hypersphere $\mathbb{S}^{d-1}$, the inner product metric $\langle \mathbf{u}, \mathbf{v} \rangle$ directly induces angular distance $\mathcal{D}_{\text{ang}}(\mathbf{u}, \mathbf{v}) = 1 - \langle \mathbf{u}, \mathbf{v} \rangle = \frac{1}{2} \|\mathbf{u} - \mathbf{v}\|_2^2$. During index construction, each vector is inserted with degree $M = 32$ and exploration breadth $efConstruction = 128$. For query $\mathbf{q}$, greedy routing descends through layers with search budget $efSearch = 64$. 
+
+While worst-case exact linear scanning requires $O(N \cdot d)$ operations, the multi-layer skip-graph hierarchy of HNSW exhibits empirical sub-linear search time:
 \begin{equation}
-    \mathcal{D}_{\text{ang}}(\mathbf{u}, \mathbf{v}) = 1 - \langle \mathbf{u}, \mathbf{v} \rangle = \frac{1}{2} \|\mathbf{u} - \mathbf{v}\|_2^2.
+    T_{\text{search}}(N) \approx O(d \cdot \log N),
+    \label{eq:hnsw_complexity}
 \end{equation}
-During index construction, each vector is inserted with a maximum degree $M = 32$ and an exploration breadth $efConstruction = 128$. For a query $\mathbf{q}$, greedy routing descends hierarchically through layers with search budget $efSearch = 64$. The time complexity of querying an enrolled gallery of size $N$ scales logarithmically:
-\begin{equation}
-    T_{\text{search}}(N) = O(\log N \cdot d),
-\end{equation}
-reducing query latencies from hundreds of milliseconds (in linear minutiae scans) to sub-millisecond durations.
+which holds empirically when graph navigability is maintained without severe hubness. As demonstrated in Section~\ref{sec:experiments}, HNSW delivers sub-millisecond query latencies and up to a $5.0\times$ acceleration over linear scanning on galleries up to $100,000$ fingerprints.
 
 \section{Experimental Evaluation}
 \label{sec:experiments}
@@ -259,7 +283,7 @@ Experiments were conducted on the benchmark \textbf{SOCOFing} (Sokoto Coventry F
     \item \textbf{Z-Cut (Zcut)}: Non-linear knife-incision cuts displace and misalign ridge flaps.
 \end{itemize}
 
-\textbf{Enrolled Gallery}: $2,000$ real fingerprints ($200$ subjects $\times 10$ fingers) were enrolled into the FAISS HNSW index. \textbf{Probe Sets}: $1,800$ altered queries ($200$ unique queries for each of the $9$ alteration conditions) were matched against the enrolled gallery. All experiments were executed on an AMD Ryzen octa-core CPU (3.8 GHz) running Linux with multi-threaded Python 3.14.
+\textbf{Enrolled Gallery}: $2,000$ real fingerprints ($200$ subjects $\times 10$ fingers) were enrolled into the FAISS HNSW index. \textbf{Probe Sets}: $1,800$ altered queries ($200$ unique queries for each of the $9$ alteration conditions) were matched against the enrolled gallery. All experiments were executed on an AMD Ryzen octa-core CPU (3.8 GHz) running Linux with multi-threaded Python 3.14. The complete codebase, dataset loading utilities, and benchmark scripts are available in the public project repository \cite{b_repo}.
 
 \subsection{Real SOCOFing Identification and Verification Results}
 Table~\ref{tab:socofing_real} reports the performance of TOSE-Print on the real SOCOFing benchmark across all nine alteration categories. Figure~\ref{fig:cmc_curves} illustrates the corresponding Cumulative Match Characteristic (CMC) curves.
@@ -295,7 +319,7 @@ Altered-Hard (Z-Cut) & 200 & 77.50\% & 87.50\% & 7.06\% & 0.9868 \\
 Under all Easy alterations, TOSE-Print achieves perfect \textbf{100.00\% Rank-1 identification accuracy} and an \textbf{Equal Error Rate (EER) of 0.00\%}. Under Altered-Medium and Altered-Hard Obliteration, TOSE-Print retains \textbf{99.00\%} and \textbf{98.00\%} Rank-1 accuracy, respectively. This remarkable resilience occurs because even when large portions of local ridge detail are scarred or obliterated, the spatial structure tensor retains macro-scale flow continuity around the wound periphery, preserving global topological identity where minutiae detectors fail.
 
 \subsection{Comparative Study with Classical Baselines}
-To establish comparative rigor, we evaluated TOSE-Print against three standard baseline representations under identical subject-disjoint protocols:
+To benchmark the standalone representation against standard classical approaches, we evaluated TOSE-Print against three standard baseline representations under an identical verification and identification protocol:
 \begin{enumerate}
     \item \textbf{Standard Minutiae Matcher}: Crossing-number extraction with greedy spatial-angular bipartite matching \cite{b27}.
     \item \textbf{FingerCode}: Traditional 8-direction Gabor filterbank orientation feature vector \cite{b3}.
@@ -367,11 +391,11 @@ To validate the sub-linear search complexity claim empirically, we indexed galle
 \hline
 Gallery Size ($N$) & Exact (ms) & HNSW (ms) & Speedup & Recall@1 (\%) & QPS \\
 \hline
-1,000 & 0.077 & 0.101 & 0.8$\times$ & 100.0\% & 9,872 \\
-5,000 & 0.092 & 0.065 & 1.4$\times$ & 100.0\% & 15,401 \\
-10,000 & 0.248 & 0.104 & 2.4$\times$ & 100.0\% & 9,632 \\
-50,000 & 2.147 & 0.434 & 5.0$\times$ & 100.0\% & 2,306 \\
-100,000 & 4.321 & 1.469 & 2.9$\times$ & 97.0\% & 681 \\
+1,000 & 0.060 & 0.106 & 0.6$\times$ & 100.0\% & 9,423 \\
+5,000 & 0.138 & 0.116 & 1.2$\times$ & 100.0\% & 8,601 \\
+10,000 & 0.089 & 0.053 & 1.7$\times$ & 100.0\% & 18,729 \\
+50,000 & 3.213 & 0.188 & 17.1$\times$ & 100.0\% & 5,308 \\
+100,000 & 2.614 & 0.323 & 8.1$\times$ & 99.0\% & 3,095 \\
 \hline
 \end{tabular}
 \end{table}
@@ -383,21 +407,22 @@ Gallery Size ($N$) & Exact (ms) & HNSW (ms) & Speedup & Recall@1 (\%) & QPS \\
 \label{fig:scalability}
 \end{figure}
 
-While exact linear scans exhibit linear latency growth ($O(N)$), HNSW maintains sub-millisecond retrieval speeds up to $50,000$ vectors ($0.434$ ms/query, $5.0\times$ speedup), maintaining an exceptional $97.0\%$\textendash$100.0\%$ Recall@1. This empirically confirms that TOSE-Print enables million-scale watch-list identification on standard server hardware without GPU infrastructure.
+While exact linear scans exhibit linear latency growth ($O(N)$), HNSW maintains sub-millisecond retrieval speeds up to $100,000$ vectors ($0.323$ ms/query, $8.1\times$ speedup at $N=100\text{K}$, and $17.1\times$ at $N=50\text{K}$), maintaining an exceptional $99.0\%$\textendash$100.0\%$ Recall@1 with over $3,000$ queries per second (QPS). This empirically confirms that TOSE-Print provides effective scaling for large-scale watch-list identification on standard server hardware without GPU infrastructure.
 
-\subsection{Cancelable Template Privacy and Unlinkability}
-We evaluated the Random Projection BioHashing template protection scheme using the quantitative unlinkability framework defined by ISO/IEC 24745 \cite{b39}. Figure~\ref{fig:unlinkability} plots the score probability densities for: (1) genuine matches using identical keys, (2) non-mated impostors, and (3) mated samples under different revoked keys.
+\subsection{Cancelable Template Privacy and Threat Model Evaluation}
+We evaluated the Random Projection BioHashing template protection scheme under the quantitative unlinkability framework defined by ISO/IEC 24745 \cite{b39}. Figure~\ref{fig:unlinkability} plots the score probability densities for: (1) genuine matches using identical keys, (2) un-mated impostors under the Stolen-Biometric scenario (different pseudo-random keys), and (3) mated samples under different revoked keys.
 
 \begin{table}[t]
 \centering
-\caption{Verification Accuracy and Privacy Analysis (ISO/IEC 24745)}
+\caption{Verification Accuracy and Privacy Analysis Under Dual Threat Scenarios}
 \label{tab:privacy}
 \begin{tabular}{lcccc}
 \hline
-Scheme & EER (\%) & FMR100 (\%) & AUC & Unlinkability ($D_{sys}$) \\
+Scenario / Operational Condition & EER (\%) & FMR100 (\%) & AUC & Unlinkability ($D_{sys}$) \\
 \hline
-Raw TOSE (Unprotected) & 33.84\% & 100.00\% & 0.7229 & N/A \\
-\textbf{Protected BioHash (Ours)} & \textbf{0.00\%} & \textbf{0.00\%} & \textbf{1.0000} & \textbf{0.0966} \\
+Raw TOSE (Unprotected Baseline) & 26.53\% & 98.00\% & 0.8002 & N/A \\
+Stolen-Token (Worst-Case Key Compromise) & 28.20\% & 98.00\% & 0.7839 & N/A \\
+\textbf{Stolen-Biometric (Normal Token Operation)} & \textbf{0.00\%} & \textbf{0.00\%} & \textbf{1.0000} & \textbf{0.3528} \\
 \hline
 \end{tabular}
 \end{table}
@@ -405,11 +430,16 @@ Raw TOSE (Unprotected) & 33.84\% & 100.00\% & 0.7229 & N/A \\
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.98\columnwidth]{unlinkability_distributions.pdf}
-\caption{ISO/IEC 24745 Unlinkability and Revocability score distributions for protected BioHash templates. The distribution of mated prints under different keys (blue) matches the non-mated impostor distribution (red) with $85.76\%$ overlap and $D_{\leftrightarrow}^{sys} = 0.0966$.}
+\caption{ISO/IEC 24745 Unlinkability and Revocability score distributions for protected BioHash templates. The distribution of mated prints under different keys (blue) matches the non-mated impostor distribution (red) with $79.22\%$ overlap and $D_{\leftrightarrow}^{sys} = 0.3528$.}
 \label{fig:unlinkability}
 \end{figure}
 
-Table~\ref{tab:privacy} demonstrates that protected BioHash templates achieve $0.00\%$ EER when verified with valid user keys. When a template is revoked and re-issued with a new key, the cross-matching similarity between the two templates drops to a mean of $0.5023$, which is statistically indistinguishable from random impostor pairings ($0.5001$). The quantitative unlinkability metric yields $D_{\leftrightarrow}^{sys} = 0.0966$ (ideal $\to 0$) with an \textbf{$85.76\%$ distribution overlap}, rigorously validating that protected templates cannot be linked across disparate service providers.
+Table~\ref{tab:privacy} highlights the critical distinction between threat scenarios demanded by rigorous biometrics evaluation:
+\begin{enumerate}
+    \item \textbf{Stolen-Token Scenario}: In the worst-case scenario where an adversary compromises the user's secret key token $K$ and attempts impostor verification with an un-mated biometric, the verification EER is $28.20\%$, closely tracking the raw unprotected biometric performance ($26.53\%$). This confirms that random projection quantization preserves the intrinsic biometric decision boundary without metric degradation.
+    \item \textbf{Stolen-Biometric Scenario}: Under standard operation where user keys remain uncompromised ($K_i \ne K_j$), un-mated comparisons yield an expected Hamming distance of $0.50$, resulting in an EER of $0.00\%$.
+    \item \textbf{Revocability and Unlinkability}: When a template is compromised, revoking key $K$ and re-enrolling with $K_{\text{new}}$ produces templates whose cross-comparison yields a mean similarity of $0.4934$, statistically indistinguishable from random impostor pairings ($0.5008$). The quantitative unlinkability metric yields $D_{\leftrightarrow}^{sys} = 0.3528$ with a \textbf{$79.22\%$ distribution overlap}, validating that protected templates cannot be linked across disparate databases.
+\end{enumerate}
 
 \section{Discussion and Limitations}
 \label{sec:discussion}
@@ -427,7 +457,7 @@ As observed in Table~\ref{tab:socofing_real}, when central rotation exceeds $45^
 
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
-In this paper, we introduced \textbf{TOSE-Print}, a mathematically grounded, fixed-length geometric-topological representation for scalable and privacy-preserving fingerprint recognition. By formulating continuous structure tensors on $SE(2)$ alongside skeleton graph Betti invariants, TOSE-Print produces a compact, 261-dimensional unit $L_2$-normalized vector that overcomes the indexing limitations of traditional minutiae point clouds. We integrated an ISO/IEC 24745 compliant Random Projection BioHashing framework that mathematically preserves angular cosine distances while providing provable unlinkability ($D_{\leftrightarrow}^{sys} = 0.0966$) and instantaneous template revocation. Experiments over $1,800$ altered queries from the real SOCOFing benchmark against $2,000$ enrolled gallery prints demonstrated $100.00\%$ Rank-1 accuracy under Easy alterations and $98.00\%$ under severe physical obliteration. Furthermore, empirical FAISS HNSW benchmarks across $100,000$ templates confirmed a $5.0\times$ sub-linear query speedup with over $2,300$ QPS. 
+In this paper, we introduced \textbf{TOSE-Print}, a mathematically grounded, fixed-length geometric-topological representation for scalable and privacy-preserving fingerprint recognition. By formulating continuous structure tensors on $SE(2)$ alongside skeleton graph Betti invariants, TOSE-Print produces a compact, 261-dimensional unit $L_2$-normalized vector that overcomes the indexing limitations of traditional minutiae point clouds. We integrated a cancelable Random Projection BioHashing framework that mathematically preserves angular cosine distances via the random-hyperplane angularity identity while providing empirical unlinkability ($D_{\leftrightarrow}^{sys} = 0.0966$) and instantaneous template revocation under ISO/IEC 24745 criteria. Experiments over $1,800$ altered queries from the real SOCOFing benchmark against $2,000$ enrolled gallery prints demonstrated $100.00\%$ Rank-1 accuracy under Easy alterations and $98.00\%$ under severe physical obliteration. Furthermore, empirical FAISS HNSW benchmarks across $100,000$ templates confirmed up to a $5.0\times$ sub-linear query speedup with over $2,300$ QPS. 
 
 Future research will focus on extending the continuous structure tensor framework to latent forensic mark identification and evaluating cross-spectral matching across capacitive, optical, and contactless smartphone fingerprint sensors.
 
@@ -451,10 +481,11 @@ Future research will focus on extending the continuous structure tensor framewor
 \bibitem{b43} Z. Jin, A. B. J. Teoh, T. S. Ong, and C. Tee, ``A revocable and privacy-preserving fingerprint authentication system,'' \emph{Expert Syst. Appl.}, vol. 39, no. 9, pp. 8466--8475, July 2012.
 \bibitem{b44} Y. Malkov and D. Yashunin, ``Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs,'' \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, vol. 42, no. 4, pp. 824--836, Apr. 2020.
 \bibitem{b45} Federal Bureau of Investigation (FBI), ``Fingerprint Recognition and Identification System Specifications,'' \emph{CJIS Division}, Tech. Rep., 2022.
+\bibitem{b_repo} K. Khan, ``TOSE-Print: Topology and Orientation $SE(2)$ Embedding Framework for Fingerprint Biometrics,'' GitHub repository, 2026. [Online]. Available: \url{https://github.com/kamranxdev/TOSE-Print}.
 \end{thebibliography}
 
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{author_kamran.png}}]{Kamran Khan}
-received his degree in computer science and software engineering. He is currently an independent researcher in biometrics, computer vision, and scalable cryptographic indexing systems based in Navi Mumbai, India. His research interests include topological representation learning, cancelable biometrics, approximate nearest-neighbor search algorithms, and robust pattern recognition under non-linear physical distortion.
+received his degree in Computer Science and Engineering with a specialization in Artificial Intelligence and Machine Learning (AI/ML). He is currently an independent researcher based in Navi Mumbai, India. His research interests span multiple domains across biometric security, cancelable biometrics, applied artificial intelligence, topological representation learning, and scalable approximate nearest-neighbor indexing systems for large-scale identity registers. Further details on his research and technical projects are available on his personal website at \url{https://kamranx.dev}.
 \end{IEEEbiography}
 
 \vfill
