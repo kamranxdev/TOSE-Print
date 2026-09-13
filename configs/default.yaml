@@ -1,0 +1,40 @@
+# TOSE-Print Default Configuration
+
+preprocessing:
+  target_size: [300, 300]
+  clahe_clip_limit: 2.5
+  clahe_grid_size: [8, 8]
+  bilateral_d: 9
+  bilateral_sigma_color: 75
+  bilateral_sigma_space: 75
+
+orientation:
+  block_size: 16
+  gaussian_sigma: 2.0
+  ori_bins: 32
+  coherence_patch_size: 16  # 16x16 = 256 dimensions
+
+topology:
+  skeleton_method: "lee"  # medial-axis thinning
+  loop_bins: 32
+  loop_range: [0.0, 200.0]
+  degree_features: true
+  betti_features: true
+
+embedding:
+  dimension: 325  # 32 (ori) + 32 (loop) + 5 (topo) + 256 (coherence patch)
+  l2_normalize: true
+
+privacy:
+  enabled: true
+  method: "biohashing"
+  projection_dim: 512
+  threshold: 0.0
+  secret_key_seed: 42
+
+indexing:
+  ann_backend: "faiss"
+  metric: "inner_product"  # Equivalent to cosine similarity for L2-normalized vectors
+  hnsw_m: 32
+  hnsw_ef_construction: 128
+  hnsw_ef_search: 64
