@@ -14,7 +14,7 @@ from tose_print.core.config import SystemConfig
 from tose_print.indexing.faiss_ann import FAISSIndexer
 
 
-def run_scalability_benchmark(scales=[1000, 5000, 10000, 50000, 100000], dim=325, n_queries=100):
+def run_scalability_benchmark(scales=[1000, 5000, 10000, 50000, 100000], dim=261, n_queries=100):
     print("=" * 75)
     print("⚡ EXPERIMENT 4: EMPIRICAL FAISS ANN SCALABILITY BENCHMARK (TIFS Standard)")
     print("=" * 75)

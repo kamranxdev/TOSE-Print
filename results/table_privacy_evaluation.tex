@@ -1,13 +1,14 @@
 \begin{table}[t]
 \centering
-\caption{Verification Accuracy and Privacy Analysis (ISO/IEC 24745)}
+\caption{Verification Accuracy and Privacy Analysis Under Dual Threat Scenarios}
 \label{tab:privacy}
 \begin{tabular}{lcccc}
 \hline
-Scheme & EER (\%) & FMR100 (\%) & AUC & Unlinkability ($D_{sys}$) \\
+Scenario / Operational Condition & EER (\%) & FMR100 (\%) & AUC & Unlinkability ($D_{sys}$) \\
 \hline
-Raw TOSE (Unprotected) & 33.84\% & 100.00\% & 0.7229 & N/A \\
-Protected BioHash (Ours) & 0.00\% & 0.00\% & 1.0000 & 0.0966 \\
+Raw TOSE (Unprotected Baseline) & 26.53\% & 98.00\% & 0.8002 & N/A \\
+Stolen-Token (Worst-Case Key Compromise) & 28.20\% & 98.00\% & 0.7839 & N/A \\
+\textbf{Stolen-Biometric (Normal Token Operation)} & \textbf{0.00\%} & \textbf{0.00\%} & \textbf{1.0000} & \textbf{0.3528} \\
 \hline
 \end{tabular}
 \end{table}
